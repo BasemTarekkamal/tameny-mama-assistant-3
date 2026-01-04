@@ -161,6 +161,48 @@ export type Database = {
         }
         Relationships: []
       }
+      children: {
+        Row: {
+          allergies: string[] | null
+          avatar_url: string | null
+          blood_type: string | null
+          created_at: string | null
+          date_of_birth: string | null
+          gender: string | null
+          id: string
+          medical_notes: string | null
+          name: string
+          parent_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          allergies?: string[] | null
+          avatar_url?: string | null
+          blood_type?: string | null
+          created_at?: string | null
+          date_of_birth?: string | null
+          gender?: string | null
+          id?: string
+          medical_notes?: string | null
+          name: string
+          parent_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          allergies?: string[] | null
+          avatar_url?: string | null
+          blood_type?: string | null
+          created_at?: string | null
+          date_of_birth?: string | null
+          gender?: string | null
+          id?: string
+          medical_notes?: string | null
+          name?: string
+          parent_id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           company: string | null
@@ -454,23 +496,32 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
           created_at: string | null
+          email: string | null
           full_name: string | null
           id: string
+          phone: string | null
           role: string | null
           tenant_id: string | null
         }
         Insert: {
+          avatar_url?: string | null
           created_at?: string | null
+          email?: string | null
           full_name?: string | null
           id: string
+          phone?: string | null
           role?: string | null
           tenant_id?: string | null
         }
         Update: {
+          avatar_url?: string | null
           created_at?: string | null
+          email?: string | null
           full_name?: string | null
           id?: string
+          phone?: string | null
           role?: string | null
           tenant_id?: string | null
         }
