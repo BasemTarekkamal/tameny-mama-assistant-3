@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Baby, MessageCircle, AlertTriangle, Activity, Heart, Sparkles } from 'lucide-react';
+import { Baby, MessageCircle, AlertTriangle, Activity, Heart, Sparkles, ChevronLeft } from 'lucide-react';
 import Header from '@/components/Header';
-import FeatureCard from '@/components/FeatureCard';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   const getWelcomeMessage = () => {
@@ -17,14 +17,14 @@ const Index = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
+        staggerChildren: 0.08,
+        delayChildren: 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 15 },
     visible: { opacity: 1, y: 0 },
   };
 
@@ -36,43 +36,66 @@ const Index = () => {
   
   const [currentTip] = React.useState(() => tips[Math.floor(Math.random() * tips.length)]);
 
+  const features = [
+    {
+      to: "/chat",
+      title: "استشارة طبية",
+      description: "استشيري المساعد الذكي",
+      icon: MessageCircle,
+      color: "#4E9AFF",
+    },
+    {
+      to: "/normal",
+      title: "هل هذا طبيعي؟",
+      description: "الأعراض الطبيعية والغير طبيعية",
+      icon: Baby,
+      color: "#46C8B2",
+    },
+    {
+      to: "/growth",
+      title: "النمو والتطعيمات",
+      description: "تتبعي نمو طفلك",
+      icon: Activity,
+      color: "#9747FF",
+    },
+    {
+      to: "/emergency",
+      title: "دليل الطوارئ",
+      description: "متى تذهبين للمستشفى",
+      icon: AlertTriangle,
+      color: "#FF6B6B",
+    },
+  ];
+
   return (
-    <div className="h-full flex flex-col py-2">
+    <div className="flex flex-col h-full pt-2">
       <Header title="طمّنّي" />
       
       {/* Welcome Card */}
       <motion.div 
-        variants={itemVariants}
-        initial="hidden"
-        animate="visible"
-        className="relative overflow-hidden bg-white rounded-2xl p-4 shadow-soft mb-3 flex-shrink-0"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden bg-white rounded-2xl p-5 shadow-soft mb-4"
       >
-        {/* Decorative gradient */}
-        <div className="absolute top-0 left-0 w-24 h-24 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-secondary/10 to-transparent rounded-full blur-xl translate-x-1/4 translate-y-1/4" />
         
         <div className="relative">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.1 }}
-          >
-            <h2 className="text-xl font-bold mb-0.5 bg-gradient-to-l from-foreground to-foreground/80 bg-clip-text">
-              {getWelcomeMessage()} 👋
-            </h2>
-            <p className="text-sm text-muted-foreground">كيف يمكننا مساعدتك اليوم؟</p>
-          </motion.div>
+          <h2 className="text-2xl font-bold mb-1">
+            {getWelcomeMessage()} 👋
+          </h2>
+          <p className="text-muted-foreground">كيف يمكننا مساعدتك اليوم؟</p>
         </div>
       </motion.div>
 
       {/* Daily Tip */}
       <motion.div
-        variants={itemVariants}
-        initial="hidden"
-        animate="visible"
-        transition={{ delay: 0.2 }}
-        className="relative overflow-hidden bg-gradient-to-l from-primary/5 via-white to-white rounded-2xl p-3 shadow-soft mb-3 border border-primary/10 flex-shrink-0"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="relative overflow-hidden bg-gradient-to-l from-primary/5 via-white to-white rounded-2xl p-4 shadow-soft mb-4 border border-primary/10"
       >
-        <div className="flex items-start gap-3">
+        <div className="flex items-center gap-3">
           <motion.div 
             animate={{ 
               rotate: [0, 10, -10, 0],
@@ -83,71 +106,50 @@ const Index = () => {
               duration: 4,
               ease: "easeInOut"
             }}
-            className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg shadow-primary/20 flex-shrink-0"
+            className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg shadow-primary/20 flex-shrink-0"
           >
-            <Heart size={18} className="text-white" />
+            <Heart size={22} className="text-white" />
           </motion.div>
           
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-bold text-sm text-foreground">نصيحة اليوم</h3>
-              <Sparkles size={12} className="text-primary" />
+            <div className="flex items-center gap-2 mb-0.5">
+              <h3 className="font-bold text-foreground">نصيحة اليوم</h3>
+              <Sparkles size={14} className="text-primary" />
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">{currentTip}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">{currentTip}</p>
           </div>
         </div>
       </motion.div>
       
-      {/* Feature Cards */}
+      {/* Feature Cards Grid */}
       <motion.div 
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="flex-1 grid grid-cols-2 gap-2 content-start"
+        className="grid grid-cols-2 gap-3 flex-1"
       >
-        <motion.div variants={itemVariants}>
-          <FeatureCard
-            to="/chat"
-            title="استشارة طبية"
-            description="استشيري المساعد الذكي"
-            icon={<MessageCircle size={20} />}
-            color="#4E9AFF"
-            compact
-          />
-        </motion.div>
-        
-        <motion.div variants={itemVariants}>
-          <FeatureCard
-            to="/normal"
-            title="هل هذا طبيعي؟"
-            description="الأعراض الطبيعية"
-            icon={<Baby size={20} />}
-            color="#46C8B2"
-            compact
-          />
-        </motion.div>
-        
-        <motion.div variants={itemVariants}>
-          <FeatureCard
-            to="/growth"
-            title="النمو والتطعيمات"
-            description="تتبعي نمو طفلك"
-            icon={<Activity size={20} />}
-            color="#9747FF"
-            compact
-          />
-        </motion.div>
-        
-        <motion.div variants={itemVariants}>
-          <FeatureCard
-            to="/emergency"
-            title="دليل الطوارئ"
-            description="متى تذهبين للمستشفى"
-            icon={<AlertTriangle size={20} />}
-            color="#FF6B6B"
-            compact
-          />
-        </motion.div>
+        {features.map((feature, index) => (
+          <motion.div key={feature.to} variants={itemVariants} className="h-full">
+            <Link 
+              to={feature.to}
+              className="flex flex-col bg-white rounded-2xl p-4 shadow-soft h-full border-r-4 hover:scale-[1.02] active:scale-[0.98] transition-transform"
+              style={{ borderRightColor: feature.color }}
+            >
+              <div 
+                className="w-12 h-12 rounded-xl flex items-center justify-center mb-3" 
+                style={{ backgroundColor: `${feature.color}15` }}
+              >
+                <feature.icon size={24} style={{ color: feature.color }} />
+              </div>
+              <h3 className="font-bold text-base mb-1">{feature.title}</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed flex-1">{feature.description}</p>
+              <div className="flex items-center gap-1 mt-2 text-xs font-medium" style={{ color: feature.color }}>
+                <span>المزيد</span>
+                <ChevronLeft size={14} />
+              </div>
+            </Link>
+          </motion.div>
+        ))}
       </motion.div>
     </div>
   );

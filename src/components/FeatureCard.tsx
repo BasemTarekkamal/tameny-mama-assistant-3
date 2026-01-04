@@ -9,9 +9,35 @@ interface FeatureCardProps {
   icon: React.ReactNode;
   color: string;
   compact?: boolean;
+  fill?: boolean;
 }
 
-const FeatureCard = ({ to, title, description, icon, color, compact }: FeatureCardProps) => {
+const FeatureCard = ({ to, title, description, icon, color, compact, fill }: FeatureCardProps) => {
+  if (fill) {
+    return (
+      <Link 
+        to={to}
+        className={cn(
+          "flex flex-col bg-white rounded-2xl p-4 shadow-soft w-full",
+          "border-r-4 hover:scale-[1.02] active:scale-[0.98] transition-transform"
+        )}
+        style={{ borderRightColor: color }}
+      >
+        <div 
+          className="w-11 h-11 rounded-xl flex items-center justify-center mb-2" 
+          style={{ backgroundColor: `${color}15` }}
+        >
+          {React.cloneElement(icon as React.ReactElement, { 
+            size: 22,
+            style: { color } 
+          })}
+        </div>
+        <h3 className="font-bold text-sm mb-1">{title}</h3>
+        <p className="text-xs text-muted-foreground leading-relaxed">{description}</p>
+      </Link>
+    );
+  }
+
   if (compact) {
     return (
       <Link 
