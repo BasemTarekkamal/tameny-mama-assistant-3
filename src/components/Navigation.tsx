@@ -20,9 +20,10 @@ const Navigation = () => {
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className="fixed bottom-0 left-0 right-0 z-50"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <div className="mx-4 mb-4">
-        <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-white/50 px-2 py-3">
+      <div className="mx-3 mb-2">
+        <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 px-1 py-2">
           <ul className="flex justify-around items-center">
             {navItems.map((item, index) => {
               const isActive = location.pathname === item.to;
@@ -42,17 +43,17 @@ const Navigation = () => {
                       {isActive && (
                         <motion.div
                           layoutId="nav-indicator"
-                          className="absolute inset-0 bg-primary/10 rounded-2xl"
+                          className="absolute inset-0 bg-primary/10 rounded-xl"
                           transition={{ type: "spring", stiffness: 300, damping: 30 }}
                         />
                       )}
                       <item.icon 
-                        size={22} 
+                        size={20} 
                         className={`relative z-10 transition-colors duration-300 ${
                           isActive ? 'text-primary' : ''
                         }`}
                       />
-                      <span className={`text-xs font-medium relative z-10 transition-colors duration-300 ${
+                      <span className={`text-[10px] font-medium relative z-10 transition-colors duration-300 ${
                         isActive ? 'text-primary' : ''
                       }`}>
                         {item.label}
