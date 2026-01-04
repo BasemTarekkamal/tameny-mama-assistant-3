@@ -5,11 +5,14 @@ import Navigation from './Navigation';
 
 const Layout = () => {
   return (
-    <div className="min-h-[100dvh] bg-background flex flex-col">
-      {/* Safe area top spacer for notch/status bar */}
-      <div className="w-full bg-background" style={{ paddingTop: 'env(safe-area-inset-top)' }} />
-      
-      <main className="flex-1 max-w-md mx-auto w-full px-4 pb-24 flex flex-col overflow-hidden">
+    <div 
+      className="bg-background flex flex-col"
+      style={{ 
+        height: '100dvh',
+        paddingTop: 'env(safe-area-inset-top)'
+      }}
+    >
+      <main className="flex-1 max-w-md mx-auto w-full px-4 pb-24 flex flex-col min-h-0">
         <Outlet />
       </main>
       
