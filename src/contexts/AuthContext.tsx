@@ -9,6 +9,7 @@ interface AuthContextType {
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
+  hasChildren: boolean | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,13 +26,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [hasChildren, setHasChildren] = useState<boolean | null>(null);
+
+  const fetchChildrenStatus = async (userId: string) => {
+    try {
+      const { count, error } = await supabase
+        .from('children')
+        .select('*', { count: 'exact', head: true })
+        .eq('parent_id', userId);
+
+      if (!error) {
+        setHasChildren((count ?? 0) > 0);
+      }
+    } catch (err) {
+      console.error('Error checking children status:', err);
+    }
+  };
 
   useEffect(() => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
-        setUser(session?.user ?? null);
+        const newUser = session?.user ?? null;
+        setUser(newUser);
+        if (newUser) {
+          fetchChildrenStatus(newUser.id);
+        } else {
+          setHasChildren(null);
+        }
         setLoading(false);
       }
     );
@@ -40,6 +63,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchChildrenStatus(session.user.id);
+      }
       setLoading(false);
     });
 
@@ -105,6 +131,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signUp,
     signIn,
     signOut,
+    hasChildren,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -5,17 +5,20 @@ import Navigation from './Navigation';
 
 const Layout = () => {
   return (
-    <div 
+    <div
       className="bg-background flex flex-col"
-      style={{ 
+      style={{
         height: '100dvh',
         paddingTop: 'env(safe-area-inset-top)'
       }}
     >
-      <main className="flex-1 max-w-md mx-auto w-full px-4 pb-24 flex flex-col min-h-0">
+      <main
+        className="flex-1 max-w-md mx-auto w-full px-4 pb-2 flex flex-col min-h-0"
+        style={{ paddingBottom: 'calc(80px + env(safe-area-inset-bottom))' }}
+      >
         <Outlet />
       </main>
-      
+
       <Navigation />
       <Toaster position="top-center" />
     </div>

@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { user, loading } = useAuth();
+  const { user, loading, hasChildren } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -21,6 +21,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   if (!user) {
     return <Navigate to="/auth" state={{ from: location }} replace />;
+  }
+
+  // Onboarding: if user has no children, send them to add their first child
+  // except if they are already on the children pages
+  if (hasChildren === false &&
+    !location.pathname.startsWith('/profile/children')) {
+    return <Navigate to="/profile/children/new" replace />;
   }
 
   return <>{children}</>;

@@ -4,18 +4,18 @@ import { motion } from 'framer-motion';
 import { Home, MessageCircle, Baby, AlertTriangle, Activity } from 'lucide-react';
 
 const navItems = [
-  { to: "/emergency", icon: AlertTriangle, label: "طوارئ", color: "destructive" },
-  { to: "/growth", icon: Activity, label: "النمو", color: "accent" },
-  { to: "/normal", icon: Baby, label: "طبيعي؟", color: "secondary" },
-  { to: "/chat", icon: MessageCircle, label: "استشارة", color: "primary" },
   { to: "/", icon: Home, label: "الرئيسية", color: "primary" },
+  { to: "/chat", icon: MessageCircle, label: "استشارة", color: "primary" },
+  { to: "/normal", icon: Baby, label: "طبيعي؟", color: "secondary" },
+  { to: "/growth", icon: Activity, label: "النمو", color: "accent" },
+  { to: "/emergency", icon: AlertTriangle, label: "طوارئ", color: "destructive" },
 ];
 
 const Navigation = () => {
   const location = useLocation();
-  
+
   return (
-    <motion.nav 
+    <motion.nav
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -28,7 +28,7 @@ const Navigation = () => {
             {navItems.map((item, index) => {
               const isActive = location.pathname === item.to;
               return (
-                <motion.li 
+                <motion.li
                   key={item.to}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -47,15 +47,13 @@ const Navigation = () => {
                           transition={{ type: "spring", stiffness: 300, damping: 30 }}
                         />
                       )}
-                      <item.icon 
-                        size={20} 
-                        className={`relative z-10 transition-colors duration-300 ${
-                          isActive ? 'text-primary' : ''
-                        }`}
+                      <item.icon
+                        size={20}
+                        className={`relative z-10 transition-colors duration-300 ${isActive ? 'text-primary' : ''
+                          }`}
                       />
-                      <span className={`text-[10px] font-medium relative z-10 transition-colors duration-300 ${
-                        isActive ? 'text-primary' : ''
-                      }`}>
+                      <span className={`text-[10px] font-medium relative z-10 transition-colors duration-300 ${isActive ? 'text-primary' : ''
+                        }`}>
                         {item.label}
                       </span>
                     </motion.div>

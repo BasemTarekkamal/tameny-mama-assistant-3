@@ -217,6 +217,29 @@ const AuthPage = () => {
               'إنشاء حساب'
             )}
           </Button>
+
+          {/* Biometric Login */}
+          <div className="pt-2">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full h-12 rounded-2xl border-dashed flex items-center justify-center gap-3 text-muted-foreground hover:text-primary transition-all group"
+              onClick={() => toast.info('بصمة الإصبع ستتوفر قريباً في إصدار التطبيق!')}
+            >
+              <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-current">
+                  <path d="M12 2C9.52285 2 7.22285 3.00736 5.53553 4.69467C3.84822 6.38198 2.84087 8.68198 2.84087 11.1591" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12V15C15 16.6569 13.6569 18 12 18C10.3431 18 9 16.6569 9 15V12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M12 9V5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M15 12V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M9 12V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M21.1591 11.1591C21.1591 8.68198 20.1517 6.38198 18.4644 4.69467C16.9602 3.19045 14.9458 2.22687 12.7212 2.03154" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M5.5 18C6.9 20.4 9.3 22 12 22C14.7 22 17.1 20.4 18.5 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </div>
+              <span className="text-sm font-medium">تسجيل الدخول بالبصمة</span>
+            </Button>
+          </div>
         </form>
 
         {/* Toggle */}
@@ -238,7 +261,7 @@ const AuthPage = () => {
 
         {/* Info */}
         <p className="mt-8 text-xs text-muted-foreground text-center max-w-xs">
-          قد تحتاج إلى تأكيد بريدك الإلكتروني للتسجيل. يمكنك تعطيل هذا من إعدادات Supabase.
+          نحن نهتم بخصوصيتك وببيانات طفلك. جميع البيانات مشفرة وآمنة تماماً.
         </p>
       </div>
     </div>
