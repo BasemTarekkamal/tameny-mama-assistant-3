@@ -45,7 +45,20 @@ const AdminNotifications = () => {
 
                 if (insertError) throw insertError;
 
-                toast.success(`تم إرسال التنبيه إلى ${profiles.length} مستخدم`);
+                // 3. Call Edge Function to send Push Notification
+                const { error: pushError } = await supabase.functions.invoke('push', {
+                    body: {
+                        title: title,
+                        message: message,
+                    },
+                });
+
+                if (pushError) {
+                    console.error('Edge Function Error:', pushError);
+                    toast.warning('تم الحفظ، ولكن فشل إرسال الإشعار للهواتف');
+                } else {
+                    toast.success(`تم إرسال التنبيه إلى ${profiles.length} مستخدم`);
+                }
                 console.log(`Successfully sent notifications to ${profiles.length} users`);
                 setTitle('');
                 setMessage('');
