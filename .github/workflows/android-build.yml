@@ -1,53 +1,102 @@
-name: Build Android APK
+name: Build Native Offline APK
 
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      git_repo:
+        description: 'Your Lovable GitHub URL'
+        required: true
+        default: 'https://github.com/BasemTarekkamal/tameny-mama-assistant-3'
+      app_name:
+        description: 'App Name'
+        required: true
+        default: 'Tameny Mama'
+      resumeUrl:
+        description: 'Resume URL for n8n'
+        required: false
+        type: string
+      user_email:
+        description: 'User Email (for notification)'
+        required: false
+        type: string
 
 jobs:
   build:
+    name: Build Native APK
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js (v22)
         uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build web application
-        run: npm run build
-
-      - name: Set up JDK 21
+      - name: Setup Java (JDK 21)
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '21'
           cache: 'gradle'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Web Assets (Vite)
+        run: npm run build
 
       - name: Sync Capacitor
-        run: npx cap sync android
+        run: |
+          # Use existing, correct configuration
+          npx cap sync android
 
       - name: Grant execute permission for gradlew
         run: chmod +x android/gradlew
 
-      - name: Build Debug APK
+      - name: Build APK (Gradle)
         run: cd android && ./gradlew assembleDebug --no-daemon
 
-      - name: Upload APK
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tameny-mama-debug-apk
+          name: app-debug-offline
           path: android/app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 90
+
+      - name: Upload APK Publicly (Catbox)
+        id: upload_file
+        run: |
+          APK_PATH=$(find android/app/build/outputs/apk/debug -name "*.apk" | head -n 1)
+          echo "Found APK at: $APK_PATH"
+          
+          # Upload to Catbox.moe
+          LINK=$(curl -F "reqtype=fileupload" -F "fileToUpload=@$APK_PATH" https://catbox.moe/user/api.php)
+          
+          echo "Public Link: $LINK"
+          echo "apk_url=$LINK" >> $GITHUB_OUTPUT
+
+      - name: Notify n8n
+        if: ${{ inputs.user_email }}
+        run: |
+          curl -X POST https://lovble.app.n8n.cloud/webhook/receive-apk \
+          -H "Content-Type: application/json" \
+          -d '{
+            "email": "${{ inputs.user_email }}",
+            "download_link": "${{ steps.upload_file.outputs.apk_url }}"
+          }'
+      
+      - name: Notify n8n Completion
+        if: always() && inputs.resumeUrl != ''
+        run: |
+          curl -X POST "${{ inputs.resumeUrl }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "status": "${{ job.status }}",
+            "apk_url": "${{ steps.upload_file.outputs.apk_url }}",
+            "app_name": "${{ inputs.app_name }}"
+          }'
