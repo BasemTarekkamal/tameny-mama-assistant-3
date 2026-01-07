@@ -74,52 +74,6 @@ const AppRoutes = () => {
 
 
 
-          {/* Protected routes */}
-          <Route element={<Layout />}>
-            <Route path="/" element={<Index />} />
-            <Route
-              path="/chat"
-              element={
-                <ProtectedRoute>
-                  <ChatPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/normal"
-              element={
-                <ProtectedRoute>
-                  <NormalPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/growth"
-              element={
-                <ProtectedRoute>
-                  <GrowthPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/emergency"
-              element={
-                <ProtectedRoute>
-                  <EmergencyPage />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
-              path="/reminders"
-              element={
-                <ProtectedRoute>
-                  <RemindersPage />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
-
           {/* Profile routes (outside Layout for custom header) */}
           <Route
             path="/profile"
@@ -165,10 +119,20 @@ const AppRoutes = () => {
 
           <Route path="*" element={<NotFound />} />
       </Routes>
-    </BrowserRouter >
-              </TooltipProvider >
-            </AuthProvider >
-          </QueryClientProvider >
-          );
+    </>
+  );
+};
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>
+      <TooltipProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
+  </QueryClientProvider>
+);
 
 export default App;
