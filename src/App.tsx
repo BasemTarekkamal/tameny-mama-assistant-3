@@ -75,6 +75,30 @@ const AppRoutes = () => {
 
 
 
+          <Route
+            path="/growth"
+            element={
+              <ProtectedRoute>
+                <GrowthPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/emergency"
+            element={
+              <ProtectedRoute>
+                <EmergencyPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reminders"
+            element={
+              <ProtectedRoute>
+                <RemindersPage />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
         {/* Profile routes (outside Layout for custom header) */}
