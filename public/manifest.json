@@ -1,0 +1,16 @@
+{
+    "short_name": "طمّنّي",
+    "name": "طمّنّي - دليلك لصحة طفلك",
+    "icons": [
+        {
+            "src": "/icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#f5f8fa",
+    "background_color": "#ffffff",
+    "orientation": "portrait"
+}
